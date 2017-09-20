@@ -12,7 +12,8 @@ module AngularRailsCsrf
 
     def set_xsrf_token_cookie
       if protect_against_forgery? && !respond_to?(:__exclude_xsrf_token_cookie?)
-        cookies['XSRF-TOKEN'] = form_authenticity_token
+        cookie_name = app.config.angular_csrf_cookie_name || "XSRF-TOKEN"
+        cookies[cookie_name] = form_authenticity_token
       end
     end
 
