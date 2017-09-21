@@ -12,17 +12,24 @@ module AngularRailsCsrf
 
     def set_xsrf_token_cookie
       if protect_against_forgery? && !respond_to?(:__exclude_xsrf_token_cookie?)
-        cookie_name = app.config.angular_csrf_cookie_name || "XSRF-TOKEN"
-        cookies[cookie_name] = form_authenticity_token
+        cookies[@configuration.cookie_name] = form_authenticity_token
       end
     end
 
     def verified_request?
       if respond_to?(:valid_authenticity_token?, true)
-        super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
+        super || valid_authenticity_token?(session, request.headers[@configuration.header_name])
       else
-        super || form_authenticity_token == request.headers['X-XSRF-TOKEN']
+        super || form_authenticity_token == request.headers[@configuration.header_name]
       end
+    end
+
+    def self.configuration
+      @configuration ||= Configuration.new
+    end
+
+    def self.configure
+      yield configuration
     end
 
     module ClassMethods
@@ -32,6 +39,18 @@ module AngularRailsCsrf
             true
           end
         end
+      end
+    end
+
+    class Configuration
+      include ActiveSupport::Configurable
+
+      config_accessor :cookie_name do
+        "XSRF-TOKEN"
+      end
+
+      config_accessor :header_name do
+        "X-XSRF-TOKEN"
       end
     end
   end
