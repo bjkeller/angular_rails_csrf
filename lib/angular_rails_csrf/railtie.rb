@@ -6,11 +6,6 @@ module AngularRailsCsrf
       ActiveSupport.on_load(:action_controller) do
         include AngularRailsCsrf::Concern
       end
-
-      if app.config.respond_to?(:angular_rails_csrf_options)
-        puts "is config"
-        AngularRailsCsrf::Concern.set_default_options(app.config.angular_rails_csrf_options)
-      end
     end
   end
 end
