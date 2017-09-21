@@ -6,6 +6,10 @@ module AngularRailsCsrf
       ActiveSupport.on_load(:action_controller) do
         include AngularRailsCsrf::Concern
       end
+
+      if app.config.respond_to?(:angular_rails_csrf_defaults)
+        AngularRailsCsrf::Concern.default_options.merge!(app.config.angular_rails_csrf_options)
+      end
     end
   end
 end
