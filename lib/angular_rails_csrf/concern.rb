@@ -12,15 +12,15 @@ module AngularRailsCsrf
 
     def set_xsrf_token_cookie
       if protect_against_forgery? && !respond_to?(:__exclude_xsrf_token_cookie?)
-        cookies[@configuration.cookie_name] = form_authenticity_token
+        cookies[AngularRailsCsrf::Concern.configuration.cookie_name] = form_authenticity_token
       end
     end
 
     def verified_request?
       if respond_to?(:valid_authenticity_token?, true)
-        super || valid_authenticity_token?(session, request.headers[@configuration.header_name])
+        super || valid_authenticity_token?(session, request.headers[AngularRailsCsrf::Concern.configuration.header_name])
       else
-        super || form_authenticity_token == request.headers[@configuration.header_name]
+        super || form_authenticity_token == request.headers[AngularRailsCsrf::Concern.configuration.header_name]
       end
     end
 
