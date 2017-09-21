@@ -8,7 +8,7 @@ module AngularRailsCsrf
       end
 
       if app.config.respond_to?(:angular_rails_csrf_options)
-        AngularRailsCsrf::Concern.default_options.merge!(app.config.angular_rails_csrf_options)
+        AngularRailsCsrf::Concern.set_default_options(app.config.angular_rails_csrf_options)
       end
     end
   end

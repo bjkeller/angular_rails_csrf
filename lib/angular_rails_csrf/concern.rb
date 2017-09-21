@@ -41,6 +41,11 @@ module AngularRailsCsrf
             header_name: "X-XSRF-TOKEN"
         }
       end
+
+      def set_default_options opts
+        @default_options = opts
+      end
+
     end
 
   end
